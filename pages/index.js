@@ -3,8 +3,11 @@ import Image from 'next/image'
 import Sidebar from '../components/sidebar/sidebar'
 import Chat from '../components/chat/chat'
 import {getSession} from 'next-auth/client'
+import {User} from '../models/usermodel'
 
-export default function Home() {
+export default function Home(props) {
+  const {session, userData, username} = props
+
   return (
     <div>
       <Head>
@@ -12,7 +15,7 @@ export default function Home() {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Sidebar/>
+      <Sidebar userData={userData}/>
       <Chat/>
     </div>
   )
@@ -20,7 +23,6 @@ export default function Home() {
 
 export async function getServerSideProps(context){
 	const session = await getSession({req:context.req})
-
 	if(!session){
 		return{
       props:{
@@ -31,9 +33,19 @@ export async function getServerSideProps(context){
 			}
 		}
 	}
+  const username = session.user.name
+  const user = await User.findOne({username:username})
+  if(!user){
+    return {
+      notFound: true
+    }
+  }
+  const userData = user.chats
   return{
     props:{
-      session:session
+      session:session,
+      userData:userData,
+      username:username
     }
   }
 }
