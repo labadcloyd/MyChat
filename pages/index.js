@@ -4,10 +4,15 @@ import Sidebar from '../components/sidebar/sidebar'
 import Chat from '../components/chat/chat'
 import {getSession} from 'next-auth/client'
 import {User} from '../models/usermodel'
+import io from 'socket.io-client'
 
 export default function Home(props) {
-  const {session, userData, username} = props
+  const {session, userChats, username} = props
+  const socket = io("http://localhost:3000");
 
+  socket.on('connect', (socket)=>{
+    console.log('connected')
+  })
   return (
     <div>
       <Head>
@@ -15,7 +20,7 @@ export default function Home(props) {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Sidebar userData={userData}/>
+      <Sidebar userChats={userChats}/>
       <Chat/>
     </div>
   )
@@ -40,11 +45,11 @@ export async function getServerSideProps(context){
       notFound: true
     }
   }
-  const userData = user.chats
+  const userChats = user.chats
   return{
     props:{
       session:session,
-      userData:userData,
+      userChats:userChats,
       username:username
     }
   }
