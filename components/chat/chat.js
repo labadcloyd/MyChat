@@ -17,11 +17,14 @@ export default function Chat(props){
 			sender: username,
 			receiver: selectedUser
 		}
+		console.log(messageForm)
 		if(isExistingChat){
 			const response = await socket.emit('send-message', messageForm, chatID)
+			console.log(response)
 			setMessage('')
 		}else if(!isExistingChat){
 			const response = await socket.emit('send-message', messageForm, chatID)
+			console.log(response)
 			setMessage('')
 		}
 	}
@@ -43,7 +46,8 @@ export default function Chat(props){
 								<p>Start chatting with this user.</p>
 							</div>
 						}
-						<div style={{display:'flex', flexDirection:'column'}}>
+						<div style={{display:'flex', flexDirection:'column', backgroundColor:'#efefef'}}>
+							Messages
 							{currentChat.messages.map((chat)=>{
 								<div style={{justifyContent:chat.sender===username?'flex-start':'flex-end'}}>
 									{chat.message}

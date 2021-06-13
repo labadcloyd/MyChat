@@ -33,9 +33,7 @@ export default function Home(props) {
 	const socketio = io();
 	socketio.on('connect', (socket)=>{
 		console.log('connected')
-		if(chatID){
-			socket.join(chatID)
-		}
+		socketio.emit('join-room', chatID)
 	})
 	socketio.on('receive-message', async(messageForm, room)=>{
 		console.log(messageForm)
@@ -44,10 +42,11 @@ export default function Home(props) {
 			setIsExistingChat(true)
 			console.log(currentChat)
 		}else if(isExistingChat){
-			setCurrentChat((prevValue)=>{return {messages: [...prevValue, messageForm] } })
+			setCurrentChat((prevValue)=>{return {messages: [prevValue, messageForm] } })
 			console.log(currentChat)
 		}
 	})
+	
 
 	/* selecting chat */
 	async function handleSelectChat(selectedUsername){
