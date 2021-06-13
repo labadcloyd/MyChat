@@ -4,9 +4,9 @@ import Sidebar from '../components/sidebar/sidebar'
 import Chat from '../components/chat/chat'
 import {getSession} from 'next-auth/client'
 import {User} from '../models/usermodel'
-import io from 'socket.io-client'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
+import {SocketContext} from '../context/socketContext';
 
 export default function Home(props) {
   const router = useRouter()
@@ -15,7 +15,7 @@ export default function Home(props) {
 	const [selectedUser, setSelectedUser] = useState()
   const [isExistingChat, setIsExistingChat] = useState(false)
   
-  const socket = io();
+  const socket = useContext(SocketContext);
 	socket.on('connect', (socket)=>{
 		console.log('connected')
 	})

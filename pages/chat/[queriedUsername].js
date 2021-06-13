@@ -5,9 +5,10 @@ import Chat from '../../components/chat/chat'
 import {getSession} from 'next-auth/client'
 import {User} from '../../models/usermodel'
 import io from 'socket.io-client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import {SocketContext} from '../../context/socketContext';
 
 export default function Home(props) {
 	const router = useRouter()
@@ -30,7 +31,7 @@ export default function Home(props) {
 	}, [username])
 
 	/* SOCKET IO */
-	const socketio = io();
+	const socketio = useContext(SocketContext);
 	socketio.on('connect', (socket)=>{
 		console.log('connected')
 		socketio.emit('join-room', chatID)
