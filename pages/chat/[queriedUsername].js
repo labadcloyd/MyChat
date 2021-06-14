@@ -23,7 +23,7 @@ export default function Home(props) {
 		const response = await axios.get('/api/getChat', {params:{queriedUsername:selectedUser, username:username}})
 		const {data} = response
 		console.log(data)
-		setCurrentChat(data)
+		setCurrentChat(data.messages)
 		setChatID(data.chatID)
 		socketio.emit('join-room', data.chatID)
 	}
@@ -39,11 +39,12 @@ export default function Home(props) {
 	/* SOCKET IO */
 	socketio.off('receive-message').on('receive-message', async(messageForm, room)=>{
 		if(!isExistingChat){
-			setCurrentChat({messages:[messageForm]});
+			console.log(messageForm)
+			setCurrentChat([messageForm]);
 			setIsExistingChat(true);
 			console.log(messageForm)
 		}else if(isExistingChat){
-			setCurrentChat((prevValue)=>{return {messages: [prevValue, messageForm] } });
+			setCurrentChat((prevValue)=>{return  [...prevValue, messageForm] } );
 			console.log(currentChat)
 		}
 	})

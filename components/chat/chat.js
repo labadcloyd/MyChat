@@ -33,19 +33,23 @@ export default function Chat(props){
 								{selectedUser}
 							</h1>
 						</div>
-						{(currentChat.messages.length < 1) &&
+						{(currentChat.length < 1) &&
 							<div>
 								<p>Start chatting with this user.</p>
 							</div>
 						}
-						<div style={{display:'flex', flexDirection:'column', backgroundColor:'#efefef'}}>
-							Messages
-							{currentChat.messages.map((chat)=>{
-								<div style={{justifyContent:chat.sender===username?'flex-start':'flex-end'}}>
-									{chat.message}
-								</div>
-							})}
-						</div>
+						{(currentChat.length > 0) &&
+							<div style={{display:'flex', flexDirection:'column', backgroundColor:'#efefef'}}>
+								Messages
+								{currentChat.map((chat)=>{
+									return(
+										<div style={{justifyContent:chat.sender===username?'flex-start':'flex-end'}}>
+											{chat.message}
+										</div>
+									)
+								})}
+							</div>
+						}
 						<form onSubmit={handleMessage}>
 							<input placeholder='Send a message' value={message} onChange={(e)=>{setMessage(e.target.value)}}></input>
 							<button type='submit'>Send</button>
