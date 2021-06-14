@@ -20,7 +20,7 @@ io.on("connection", (socket) => {
   socket.on('send-message', (messageForm, room)=>{
     console.log(messageForm, room)
     if(room){
-      io.in(room).emit('receive-message', messageForm)
+      io.to(room).emit('receive-message', messageForm)
     }
   })
 })

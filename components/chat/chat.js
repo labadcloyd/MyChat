@@ -5,11 +5,6 @@ export default function Chat(props){
 	const {isExistingChat, selectedUser, currentChat, username, socket, chatID} = props
 	const [message, setMessage] = useState()
 
-	/* joing socket room */
-	useEffect(()=>{
-		
-	}, [chatID])
-
 	async function handleMessage(event){
 		event.preventDefault()
 		const messageForm = {
@@ -17,14 +12,11 @@ export default function Chat(props){
 			sender: username,
 			receiver: selectedUser
 		}
-		console.log(messageForm)
 		if(isExistingChat){
-			const response = await socket.emit('send-message', messageForm, chatID)
-			console.log(response)
+			await socket.emit('send-message', messageForm, chatID)
 			setMessage('')
 		}else if(!isExistingChat){
-			const response = await socket.emit('send-message', messageForm, chatID)
-			console.log(response)
+			await socket.emit('send-message', messageForm, chatID)
 			setMessage('')
 		}
 	}
