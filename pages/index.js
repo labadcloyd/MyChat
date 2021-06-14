@@ -8,13 +8,13 @@ import io from 'socket.io-client'
 
 export default function Home(props) {
   const {session, userChats, username} = props
-  const socket = io("http://localhost:3000");
+  const socket = io();
 
   socket.on('connect', (socket)=>{
     console.log('connected')
   })
   return (
-    <div>
+    <div className="chat-wrapper">
       <Head>
         <title>Chat App</title>
         <meta name="description" content="" />

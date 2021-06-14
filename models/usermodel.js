@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
 	chats:[
 		{
 			chatID:String,
+			chatPartner:String
 		}
 	]
 }, {
