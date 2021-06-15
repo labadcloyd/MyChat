@@ -1,3 +1,4 @@
+import { ClickAwayListener } from '@material-ui/core'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import css from './sidebar.module.css'
@@ -20,6 +21,7 @@ export default function Sidebar(props){
 	}
 	return(
 		<>
+		<ClickAwayListener onClickAway={()=>{setShowSearch(false)}}>
 			<div className={css.sidebarContainer}>
 				<div>
 					<div>
@@ -53,6 +55,7 @@ export default function Sidebar(props){
 					})
 				}
 			</div>
+		</ClickAwayListener>
 		</>
 	)
 }
