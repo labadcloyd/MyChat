@@ -4,16 +4,12 @@ import css from './sidebar.module.css'
 
 export default function Sidebar(props){
 	const {userChats} = props
-	const [currentChats, setCurrentChats] = useState()
 	const [userSearch, setUserSearch] = useState()
-	const [foundUsers, setFoundUsers] = useState()
-	useEffect(()=>{
-		if(userChats){
-			setCurrentChats(userChats)
-		}
-	},[])
+	const [foundUsers, setFoundUsers] = useState([])
+	const [showSearch, setShowSearch] = useState(false)
 	/* searching for user */
 	async function handleSearch(){
+		setShowSearch(true)
 		try{
             const userChatDetail = await axios.get('/api/getUserChat', {params:{userQuery:userSearch}});
             console.log(userChatDetail)
@@ -22,25 +18,32 @@ export default function Sidebar(props){
 			console.log(err)
         }
 	}
-	
 	return(
 		<>
 			<div className={css.sidebarContainer}>
 				<div>
-					<div>	
+					<div>
 						<input type="search" value={userSearch} onChange={((e)=>{setUserSearch(e.target.value)})}></input>
 						<button onClick={handleSearch}>Search</button>
 					</div>
-					<div>
-
+					<div style={{display:showSearch?'block':'none'}}>
+						{foundUsers.map((user)=>{
+							return(
+								<div onClick={()=>{props.handleSelectChat(user.username)}}>
+									<p>
+										{user.username}
+									</p>
+								</div>
+							)
+						})}
 					</div>
 				</div>
-				{!currentChats &&
+				{!userChats &&
 					<div>
 						<h2>Start Chatting With Other Users</h2>
 					</div>
 				}
-				{currentChats &&
+				{userChats &&
 					userChats.map((chat)=>{
 						return(
 							<div key={chat.chatID}>

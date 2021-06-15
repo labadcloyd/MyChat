@@ -5,14 +5,38 @@ import Chat from '../components/chat/chat'
 import {getSession} from 'next-auth/client'
 import {User} from '../models/usermodel'
 import io from 'socket.io-client'
+import { useState } from 'react'
 
 export default function Home(props) {
   const {session, userChats, username} = props
+	const [currentChat, setCurrentChat] = useState(null)
+	const [selectedUser, setSelectedUser] = useState()
+  const [isExistingChat, setIsExistingChat] = useState(false)
+  
   const socket = io();
 
   socket.on('connect', (socket)=>{
     console.log('connected')
   })
+	
+	/* filtering for the selected chat */
+	async function filterChat(selectedUsername){
+		await userChats.filter((chat)=>{
+			return chat.chatPartner === selectedUsername
+		})
+	}
+	/* selecting chat */
+	async function handleSelectChat(selectedUsername){
+		const foundChat = await filterChat(selectedUsername)
+    setSelectedUser(selectedUsername)
+		if(foundChat){
+      setIsExistingChat(true)
+			setCurrentChat(foundChat)
+		}
+		if(!foundChat){
+      setIsExistingChat(false)
+		}
+	}
   return (
     <div className="chat-wrapper">
       <Head>
@@ -20,8 +44,8 @@ export default function Home(props) {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Sidebar userChats={userChats}/>
-      <Chat/>
+      <Sidebar handleSelectChat={handleSelectChat} userChats={userChats}/>
+      <Chat isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username}/>
     </div>
   )
 }
