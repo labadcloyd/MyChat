@@ -43,9 +43,6 @@ export async function getServerSideProps(context){
 	const session = await getSession({req:context.req})
 	if(!session){
 		return{
-      props:{
-        session:session
-      },
 			redirect:{
 				destination: '/auth'
 			}

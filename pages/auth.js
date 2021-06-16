@@ -1,9 +1,18 @@
 import AuthForm from '../components/auth/auth-form';
 import Head from 'next/head'
 import {getSession} from 'next-auth/client'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
 
 function AuthPage(props) {
+  const router = useRouter()
 
+  useEffect(async()=>{
+    const currentSession = await getSession()
+    if(currentSession){
+      router.push('/')
+    }
+  },[router])
   return (
       <>
         <Head>
@@ -15,23 +24,3 @@ function AuthPage(props) {
 }
 
 export default AuthPage;
-
-export async function getServerSideProps(context){
-	const session = await getSession({req:context.req})
-
-	if(session){
-		return{
-      props:{
-        session:session
-      },
-			redirect:{
-				destination: '/'
-			}
-		}
-	}
-  return{
-    props:{
-      fakeProps:'fake props'
-    }
-  }
-}
