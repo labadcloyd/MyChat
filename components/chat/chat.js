@@ -41,9 +41,9 @@ export default function Chat(props){
 						{(currentChat.length > 0) &&
 							<div style={{display:'flex', flexDirection:'column', backgroundColor:'#efefef'}}>
 								Messages
-								{currentChat.map((chat)=>{
+								{currentChat.map((chat, index)=>{
 									return(
-										<div style={{justifyContent:chat.sender===username?'flex-start':'flex-end'}}>
+										<div style={{textAlign:chat.sender===username?'right':'left'}}>
 											{chat.message}
 										</div>
 									)
