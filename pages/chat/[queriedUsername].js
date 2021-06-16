@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Sidebar from '../../components/sidebar/sidebar'
 import Chat from '../../components/chat/chat'
-import {getSession} from 'next-auth/client'
+import {getSession, useSession} from 'next-auth/client'
 import {User} from '../../models/usermodel'
 import { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/router'
@@ -12,11 +12,15 @@ import {SocketContext} from '../../context/socketContext';
 export default function Home(props) {
 	const router = useRouter()
 	const socketio = useContext(SocketContext);
-
-	const {session, username, userChats, selectedUser, doesChatExist} = props
+	
+	const selectedUser = router.query.queriedUsername
+	const [username, setUsername] = useState()
+	const [doesChatExist, setChatExists] =useState(false)
+	const [userChats, setUserChats] = useState()
 	const [chatID, setChatID] = useState(null)
 	const [currentChat, setCurrentChat] = useState(null)
 	const [isExistingChat, setIsExistingChat] = useState(doesChatExist)
+
 
 	/* getting current chat */
 	async function getCurrentChat(){
@@ -27,9 +31,11 @@ export default function Home(props) {
 		setChatID(data.chatID)
 		socketio.emit('join-room', data.chatID)
 	}
-	useEffect(()=>{
-		getCurrentChat()
-	}, [username])
+	useEffect(async()=>{
+		const [ session, loading ] = await useSession()
+		setUsername(session.user.name)
+		await getCurrentChat()
+	}, [router])
 
 	/* selecting chat */
 	async function handleSelectChat(selectedUsername){
@@ -37,6 +43,7 @@ export default function Home(props) {
 	}
 
 	/* SOCKET IO */
+	/* turning off listener in order to for socketio to only listen once */
 	socketio.off('receive-message').on('receive-message', async(messageForm, room)=>{
 		if(!isExistingChat){
 			console.log(messageForm)
@@ -59,50 +66,4 @@ export default function Home(props) {
 			<Chat chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
 		</div>
 	)
-}
-
-export async function getServerSideProps(context){
-	/* basic authentication */
-	const session = await getSession({req:context.req})
-	const queriedUsername = context.params.queriedUsername;
-	if(!session){
-		return{
-			redirect:{
-				destination: '/auth'
-			}
-		}
-	}
-	/* finding the user */
-	const username = session.user.name
-	const user = await User.findOne({username:username})
-	if(!user){
-		return {
-			notFound: true
-		}
-	}
-	/* searching for the queried chat */
-	const userChats = user.chats
-	const existingChat = await userChats.find((chat)=>{return chat.chatPartner === queriedUsername})
-	if(existingChat){
-		return{
-			props:{
-				session:session,
-				userChats:userChats,
-				username:username,
-				selectedUser: queriedUsername,
-				doesChatExist: true,
-			}
-		}
-	}
-	if(!existingChat){
-		return{
-			props:{
-				session:session,
-				userChats:userChats,
-				username:username,
-				selectedUser: queriedUsername,
-				doesChatExist: false,
-			}
-		}
-	}
 }
