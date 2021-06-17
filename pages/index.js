@@ -14,11 +14,10 @@ export default function Home(props) {
   const [isExistingChat, setIsExistingChat] = useState(false)
   
   const socket = io();
+	socket.on('connect', (socket)=>{
+		console.log('connected')
+	})
 
-  socket.on('connect', (socket)=>{
-    console.log('connected')
-  })
-	
 	/* filtering for the selected chat */
 	async function filterChat(selectedUsername){
 		await userChats.filter((chat)=>{
@@ -44,8 +43,8 @@ export default function Home(props) {
         <meta name="description" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Sidebar handleSelectChat={handleSelectChat} userChats={userChats}/>
-      <Chat isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username}/>
+      <Sidebar username={username} handleSelectChat={handleSelectChat} userChats={userChats}/>
+      <Chat isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socket}/>
     </div>
   )
 }

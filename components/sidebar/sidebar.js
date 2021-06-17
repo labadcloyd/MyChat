@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import css from './sidebar.module.css'
 
 export default function Sidebar(props){
-	const {userChats} = props
+	const {userChats, username} = props
 	const [userSearch, setUserSearch] = useState()
 	const [foundUsers, setFoundUsers] = useState([])
 	const [showSearch, setShowSearch] = useState(false)
@@ -12,7 +12,7 @@ export default function Sidebar(props){
 	async function handleSearch(){
 		setShowSearch(true)
 		try{
-            const userChatDetail = await axios.get('/api/getUserChat', {params:{userQuery:userSearch}});
+            const userChatDetail = await axios.get('/api/getUserChat', {params:{userQuery:userSearch, username:username}});
             console.log(userChatDetail)
             setFoundUsers(userChatDetail.data)
         }catch(err){
