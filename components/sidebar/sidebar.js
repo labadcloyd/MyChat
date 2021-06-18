@@ -9,7 +9,8 @@ export default function Sidebar(props){
 	const [foundUsers, setFoundUsers] = useState([])
 	const [showSearch, setShowSearch] = useState(false)
 	/* searching for user */
-	async function handleSearch(){
+	async function handleSearch(event){
+		event.preventDefault()
 		setShowSearch(true)
 		try{
             const userChatDetail = await axios.get('/api/getUserChat', {params:{userQuery:userSearch, username:username}});
@@ -24,10 +25,10 @@ export default function Sidebar(props){
 		<ClickAwayListener onClickAway={()=>{setShowSearch(false)}}>
 			<div className={css.sidebarContainer}>
 				<div>
-					<div>
+					<form onSubmit={handleSearch}>
 						<input type="search" value={userSearch} onChange={((e)=>{setUserSearch(e.target.value)})}></input>
-						<button onClick={handleSearch}>Search</button>
-					</div>
+						<button type="submit">Search</button>
+					</form>
 					<div style={{display:showSearch?'block':'none'}}>
 						{foundUsers.map((user)=>{
 							return(
