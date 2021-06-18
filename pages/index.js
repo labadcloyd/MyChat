@@ -6,8 +6,10 @@ import {getSession} from 'next-auth/client'
 import {User} from '../models/usermodel'
 import io from 'socket.io-client'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 export default function Home(props) {
+  const router = useRouter()
   const {session, userChats, username} = props
 	const [currentChat, setCurrentChat] = useState(null)
 	const [selectedUser, setSelectedUser] = useState()
@@ -17,24 +19,9 @@ export default function Home(props) {
 	socket.on('connect', (socket)=>{
 		console.log('connected')
 	})
-
-	/* filtering for the selected chat */
-	async function filterChat(selectedUsername){
-		await userChats.filter((chat)=>{
-			return chat.chatPartner === selectedUsername
-		})
-	}
-	/* selecting chat */
+	/* selecting chat handler */
 	async function handleSelectChat(selectedUsername){
-		const foundChat = await filterChat(selectedUsername)
-    setSelectedUser(selectedUsername)
-		if(foundChat){
-      setIsExistingChat(true)
-			setCurrentChat(foundChat)
-		}
-		if(!foundChat){
-      setIsExistingChat(false)
-		}
+    router.push(`/chat/${selectedUsername}`)
 	}
   return (
     <div className="chat-wrapper">
@@ -44,12 +31,15 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Sidebar username={username} handleSelectChat={handleSelectChat} userChats={userChats}/>
-      <Chat isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socket}/>
+      <div>
+        Search for a user to start chatting
+      </div>
     </div>
   )
 }
 
 export async function getServerSideProps(context){
+  /* basic authentication */
 	const session = await getSession({req:context.req})
 	if(!session){
 		return{
@@ -61,6 +51,7 @@ export async function getServerSideProps(context){
 			}
 		}
 	}
+  /* finding the user */
   const username = session.user.name
   const user = await User.findOne({username:username})
   if(!user){
@@ -68,6 +59,7 @@ export async function getServerSideProps(context){
       notFound: true
     }
   }
+  /* finding the user's chat */
   const userChats = user.chats
   return{
     props:{
