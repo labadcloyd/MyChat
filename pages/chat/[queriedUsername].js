@@ -61,8 +61,7 @@ export async function getServerSideProps(context){
 	/* searching for the queried chat */
 	const userChats = user.chats
 	const queriedChat = await userChats.find((chat)=>{return chat.chatPartner === queriedUsername})
-	const currentChat = await Chats.findOne({_id:queriedChat.chatID})
-	if(!currentChat){
+	if(!queriedChat){
 		return{
 			props:{
 				session:session,
@@ -74,12 +73,13 @@ export async function getServerSideProps(context){
 			}
 		}
 	}
+	const currentChat = await Chats.findOne({_id:queriedChat.chatID})
 	return{
 		props:{
 			session:session,
 			userChats:userChats,
 			username:username,
-			queriedChat: queriedChat,
+			queriedChat: currentChat,
 			selectedUser: queriedUsername,
 			doesChatExist: true,
 		}
