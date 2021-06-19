@@ -27,7 +27,7 @@ export default function Home(props) {
 	socket.on('connect', (socket)=>{
 		console.log('connected')
 	})
-  
+
   if(loading || !username){
 		return(
 			<div>
@@ -45,7 +45,7 @@ export default function Home(props) {
           <meta name="description" content="" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Sidebar username={username} handleSelectChat={handleSelectChat} userChats={userChats}/>
+        <Sidebar username={username} userChats={userChats}/>
         <div>
           Search for a user to start chatting
         </div>
