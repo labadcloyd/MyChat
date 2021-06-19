@@ -38,11 +38,6 @@ export default function Home(props) {
 		}
 	}, [loading])
 
-	/* selecting chat */
-	async function handleSelectChat(selectedUsername){
-		router.push(`/chat/${selectedUsername}`)
-	}
-
 	/* SOCKET IO */
 	/* turning off listener in order to for socketio to only listen once */
 	socketio.off('receive-message').on('receive-message', async(messageForm, room)=>{

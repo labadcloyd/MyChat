@@ -1,10 +1,12 @@
 import { ClickAwayListener } from '@material-ui/core'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import css from './sidebar.module.css'
 
 export default function Sidebar(props){
 	const {userChats, username} = props
+	const router = useRouter()
 	const [userSearch, setUserSearch] = useState()
 	const [foundUsers, setFoundUsers] = useState([])
 	const [showSearch, setShowSearch] = useState(false)
@@ -32,7 +34,7 @@ export default function Sidebar(props){
 					<div style={{display:showSearch?'block':'none'}}>
 						{foundUsers.map((user)=>{
 							return(
-								<div onClick={()=>{props.handleSelectChat(user.username)}}>
+								<div onClick={()=>{router.push(`/chat/${user.username}`)}}>
 									<p>
 										{user.username}
 									</p>

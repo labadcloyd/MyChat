@@ -28,10 +28,6 @@ export default function Home(props) {
 		console.log('connected')
 	})
   
-	/* selecting chat handler */
-	async function handleSelectChat(selectedUsername){
-    router.push(`/chat/${selectedUsername}`)
-	}
   if(loading || !username){
 		return(
 			<div>
