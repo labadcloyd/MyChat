@@ -6,8 +6,8 @@ export default async function handler(req,res){
 	if(req.method==='GET'){
 		try{
 			const {userQuery, username} = req.query
+			/* Querying for a user that isn't equal to the current user and only getting the username*/
 			const userChatDetails = await User.find({username: {$regex:userQuery, $ne:username}}, {username:1} )
-			console.log(userChatDetails)
 			res.status(201).json(userChatDetails) 
 		}catch(error){
 			res.json(error)

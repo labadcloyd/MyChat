@@ -15,7 +15,7 @@ export default function Sidebar(props){
 		event.preventDefault()
 		setShowSearch(true)
 		try{
-            const userChatDetail = await axios.get('/api/getUserChat', {params:{userQuery:userSearch, username:username}});
+            const userChatDetail = await axios.get('/api/searchChat', {params:{userQuery:userSearch, username:username}});
             console.log(userChatDetail)
             setFoundUsers(userChatDetail.data)
         }catch(err){

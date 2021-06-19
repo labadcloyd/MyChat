@@ -20,11 +20,11 @@ export default function Home(props) {
 	const [currentChat, setCurrentChat] = useState(null)
 	const [isExistingChat, setIsExistingChat] = useState(false)
 
-	/* getting current chat */
+	/* Fecthing Data */
+	/* Getting current chat */
 	async function getCurrentChat(){
 		const response = await axios.get('/api/getChat', {params:{queriedUsername:selectedUser, username:session.user.name}})
 		const {data} = response
-		console.log(data)
 		setCurrentChat(data.messages)
 		setChatID(data.chatID)
 		socketio.emit('join-room', data.chatID)
