@@ -7,6 +7,7 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 const port = process.env.PORT || 3000
+const {Chats} = require('./models/chatmodel')
 require('dotenv').config({path:'./config.env'})
 const connectDb = require('./utilsServer/connectDB')
 connectDb();
@@ -17,11 +18,13 @@ io.on("connection", (socket) => {
     console.log('joined room')
     socket.join(room)
   })
-  socket.on('send-message', (messageForm, room)=>{
-    console.log(messageForm, room)
+  socket.on('send-message', async(messageForm, room)=>{
     if(room){
       io.in(room).emit('receive-message', messageForm)
     }
+    console.log(messageForm)
+    const response = await Chats.findOneAndUpdate({chatID:room},{ $push: { "messages": messageForm } })
+    console.log(response)
   })
 })
 

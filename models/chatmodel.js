@@ -16,4 +16,4 @@ const chatSchema = new mongoose.Schema({
 //it is very important to structure the model like this as Nextjs has a bug that creates the models again every render if the model is not done like this
 const Chats = mongoose.models.Chats || mongoose.model('Chats', chatSchema )
 
-export {Chats}
+module.exports = {Chats}
