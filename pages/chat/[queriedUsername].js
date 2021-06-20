@@ -21,6 +21,16 @@ export default function Home(props) {
 	const [isExistingChat, setIsExistingChat] = useState(false)
 
 	/* Fecthing Data */
+	/* Getting user's chats */
+	async function getUserChats(){
+		const response = await axios.get('/api/getUserChats', {params:{username:session.user.name}})
+		if(response.data.chats.length === 0){
+			setUserChats(null)
+		}
+		if(response.data.chats.length > 0){
+			setUserChats(response.data.chats)
+		}
+	}
 	/* Getting current chat */
 	async function getCurrentChat(){
 		const response = await axios.get('/api/getChat', {params:{queriedUsername:selectedUser, username:session.user.name}})
@@ -33,6 +43,7 @@ export default function Home(props) {
 		if(!loading && session){
 			setUsername(session.user.name)
 			await getCurrentChat()
+			await getUserChats()
 		}if(!loading && !session){
 			router.push('/auth')
 		}

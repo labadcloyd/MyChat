@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import {SocketContext} from '../context/socketContext';
 import {getSession, useSession} from 'next-auth/client'
+import axios from 'axios';
 
 export default function Home(props) {
   const router = useRouter()
@@ -12,13 +13,21 @@ export default function Home(props) {
   
 	const [username, setUsername] = useState()
 	const [userChats, setUserChats] = useState()
-	const [chatID, setChatID] = useState(null)
-	const [currentChat, setCurrentChat] = useState(null)
-	const [isExistingChat, setIsExistingChat] = useState(false)
-  
-  useEffect(async()=>{
+	
+	/* Getting user's chats */
+	async function getUserChats(){
+		const response = await axios.get('/api/getUserChats', {params:{username:session.user.name}})
+		if(response.data.chats.length === 0){
+			setUserChats(null)
+		}
+		if(response.data.chats.length > 0){
+			setUserChats(response.data.chats)
+		}
+	}
+	useEffect(async()=>{
 		if(!loading && session){
 			setUsername(session.user.name)
+			await getUserChats()
 		}if(!loading && !session){
 			router.push('/auth')
 		}
@@ -28,7 +37,7 @@ export default function Home(props) {
 		console.log('connected')
 	})
 
-  if(loading || !username){
+	if(loading || !username){
 		return(
 			<div>
 				<h1>Loading...</h1>
@@ -37,19 +46,19 @@ export default function Home(props) {
 			</div>
 		)
 	}
-  if(!loading ){
-    return (
-      <div className="chat-wrapper">
-        <Head>
-          <title>Chat App</title>
-          <meta name="description" content="" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <Sidebar username={username} userChats={userChats}/>
-        <div>
-          Search for a user to start chatting
-        </div>
-      </div>
-    )
-  }
+	if(!loading ){
+		return (
+		<div className="chat-wrapper">
+			<Head>
+			<title>Chat App</title>
+			<meta name="description" content="" />
+			<link rel="icon" href="/favicon.ico" />
+			</Head>
+			<Sidebar username={username} userChats={userChats}/>
+			<div>
+			Search for a user to start chatting
+			</div>
+		</div>
+		)
+	}
 }
