@@ -13,18 +13,19 @@ const connectDb = require('./utilsServer/connectDB')
 connectDb();
 
 io.on("connection", (socket) => {
-  console.log('connected')
   socket.on('join-room', (room)=>{
-    console.log('joined room')
     socket.join(room)
   })
   socket.on('send-message', async(messageForm, room)=>{
     if(room){
       io.in(room).emit('receive-message', messageForm)
     }
-    console.log(messageForm)
+    /* 
+    ! chats are updated without error handling. 
+    * Users may still send messages but there's a chance their messages won't be saved. 
+    * So if they refresh, the unsaved messages won't show.
+    */
     const response = await Chats.findOneAndUpdate({chatID:room},{ $push: { "messages": messageForm } })
-    console.log(response)
   })
 })
 

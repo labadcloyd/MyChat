@@ -37,6 +37,9 @@ export default function Home(props) {
 		const {data} = response
 		setCurrentChat(data.messages)
 		setChatID(data.chatID)
+		if(data.messages.length>0){
+			setIsExistingChat(true)
+		}
 		socketio.emit('join-room', data.chatID)
 	}
 	useEffect(async()=>{
