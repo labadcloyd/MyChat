@@ -27,8 +27,8 @@ export default function Chat(props){
 					<div>Loading...</div>
 				}
 				{currentChat &&
-					<div>
-						<div>
+					<>
+						<div style={{position:"fixed", top:'60px', width:'100%', backgroundColor:'#fff'}}>
 							<h1>
 								{selectedUser}
 							</h1>
@@ -39,8 +39,7 @@ export default function Chat(props){
 							</div>
 						}
 						{(currentChat.length > 0) &&
-							<div style={{display:'flex', flexDirection:'column', backgroundColor:'#efefef'}}>
-								Messages
+							<div style={{height:'100%', padding:'100px 20px 30px 20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
 								{currentChat.map((chat, index)=>{
 									return(
 										<div style={{textAlign:chat.sender===username?'right':'left'}}>
@@ -50,11 +49,11 @@ export default function Chat(props){
 								})}
 							</div>
 						}
-						<form onSubmit={handleMessage}>
+						<form onSubmit={handleMessage} style={{position:'fixed', bottom:'0'}}>
 							<input placeholder='Send a message' value={message} onChange={(e)=>{setMessage(e.target.value)}}></input>
 							<button type='submit'>Send</button>
 						</form>
-					</div>
+					</>
 				}
 			</div>
 		</>
