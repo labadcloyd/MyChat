@@ -14,11 +14,11 @@ export default function MainNavigation() {
   }
 
   return (
-    <div className={css.headerContainer} style={currentRoute==='/'||currentRoute==='/auth'?{backgroundColor:'transparent'}:{backgroundColor:'#001d30'}}>
+    <div className={css.headerContainer} style={{backgroundColor:'#001d30'}}>
       <header className={css.header}>
         <Link href='/'>
           <a>
-            <div className={css.logo} style={currentRoute.includes('/dashboard')||currentRoute.includes('/files')?{marginLeft:'20px'}:{marginLeft:'0'}}><span>Chat App</span></div>
+            <div className={css.logo}><span>MyChat</span></div>
           </a>
         </Link>
         <nav>

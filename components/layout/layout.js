@@ -4,7 +4,9 @@ function Layout(props) {
   return (
     <>
       <MainNavigation />
-      {props.children}
+      <div style={{height:'100vh', paddingTop:'60px', boxSizing:'border-box'}}>
+        {props.children}
+      </div>
     </>
   );
 }
