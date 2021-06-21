@@ -22,7 +22,7 @@ export default function Chat(props){
 	}
 	return(
 		<>
-			<div>
+			<div style={{height:'100%'}}>
 				{!currentChat &&
 					<div>Loading...</div>
 				}

@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
     * Users may still send messages but there's a chance their messages won't be saved. 
     * So if they refresh, the unsaved messages won't show.
     */
-    const response = await Chats.findOneAndUpdate({chatID:room},{ $push: { "messages": messageForm } })
+    await Chats.findOneAndUpdate({chatID:room},{ $push: { "messages": messageForm } })
   })
 })
 
