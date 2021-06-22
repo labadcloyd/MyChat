@@ -7,14 +7,24 @@ export default function Chat(props){
 	const botMsg = useRef();
 	const chatDiv = useRef();
 	
+	/*
+	 ! THIS IS MY OWN IMPLEMENTATION OF INFINITE SCROLLING FOR CHAT APPS
+	*/
 	const onScroll = async () => {
 		if (chatDiv.current) {
 			const { scrollTop, scrollHeight, clientHeight } = chatDiv.current;
 			if(scrollTop === 0){
 				const pastScroll = scrollHeight
-				console.log(pastScroll)
 				await props.fecthMoreChat()
+				/*
+				 * Here we get the old scroll height first, save it then update the component and get the new scroll height
+				 * then subtract the new scroll height with the old scroll height and use the number to set scroll
+				*/
 				const currentScroll = (await chatDiv.current.scrollHeight-pastScroll)
+				/*
+				 * The ``scrollTo()`` function takes (x,y) parameters respectively.
+				 * The Y axis starts from the top to the bottom. so ``scrollTo(0,0)`` will scroll to the very top
+				*/
 				await chatDiv.current.scrollTo(0, currentScroll)
 			}
 		}
