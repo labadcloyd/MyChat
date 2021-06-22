@@ -5,13 +5,17 @@ export default function Chat(props){
 	const {isExistingChat, selectedUser, currentChat, username, socket, chatID} = props;
 	const [message, setMessage] = useState();
 	const botMsg = useRef();
-	const topDiv = useRef();
-
-	const onScroll = () => {
-		if (topDiv.current) {
-			const { scrollTop, scrollHeight, clientHeight } = topDiv.current;
-			if(scrollTop < 40){
-				props.fecthMoreChat()
+	const chatDiv = useRef();
+	
+	const onScroll = async () => {
+		if (chatDiv.current) {
+			const { scrollTop, scrollHeight, clientHeight } = chatDiv.current;
+			if(scrollTop === 0){
+				const pastScroll = scrollHeight
+				console.log(pastScroll)
+				await props.fecthMoreChat()
+				const currentScroll = (await chatDiv.current.scrollHeight-pastScroll)
+				await chatDiv.current.scrollTo(0, currentScroll)
 			}
 		}
 	};
@@ -56,7 +60,7 @@ export default function Chat(props){
 							</div>
 						}
 						{(currentChat.length > 0) &&
-							<div id='scrollableDiv' ref={topDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
+							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
 								{/* <div style={{visibility:'hidden'}} ref={topDiv}></div> */}
 								{currentChat.map((chat, index)=>{
 									return(
