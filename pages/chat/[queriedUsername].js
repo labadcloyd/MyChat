@@ -63,6 +63,14 @@ export default function Home(props) {
 		}
 	})
 
+	/* FECTHING MORE CHAT IF IT REACHES TOP */
+	async function fecthMoreChat(){
+		console.log(currentChat)
+		const dataChat = [{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"},{message: "asd asd asd asd asd", receiver: "cloyd123", sender: "labadcloyd", _id: "60f96b9045fc3c06bc3640cf"}]
+		setCurrentChat((prevValue)=>{
+			return [...dataChat, ...prevValue]
+		}) 
+	}
 	if(loading || !username){
 		return(
 			<div>
@@ -88,7 +96,7 @@ export default function Home(props) {
 				{currentChat &&
 					<>
 						<Sidebar username={username} userChats={userChats}/>
-						<Chat chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
+						<Chat fecthMoreChat={fecthMoreChat} chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
 					</>
 				}
 			</div>
