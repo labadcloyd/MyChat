@@ -15,7 +15,7 @@ export default function Home(props) {
 	
 	const selectedUser = router.query.queriedUsername
 	const [username, setUsername] = useState()
-	const [userChats, setUserChats] = useState()
+	const [userChats, setUserChats] = useState([])
 	const [chatID, setChatID] = useState(null)
 	const [currentChat, setCurrentChat] = useState(null)
 	const [isExistingChat, setIsExistingChat] = useState(false)
@@ -80,14 +80,16 @@ export default function Home(props) {
 					<meta name="description" content="" />
 					<link rel="icon" href="/favicon.ico" />
 				</Head>
-				<Sidebar username={username} userChats={userChats}/>
 				{!currentChat && 
 					<div>
 						<h1>Loading...</h1>
 					</div>
 				}
 				{currentChat &&
-					<Chat chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
+					<>
+						<Sidebar username={username} userChats={userChats}/>
+						<Chat chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
+					</>
 				}
 			</div>
 		)

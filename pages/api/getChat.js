@@ -7,6 +7,9 @@ export default async function handler(req,res){
 		const uniqueID = uuidv4()
 		try{
 			const {queriedUsername, username} = req.query
+			/* 
+				! this query takes too much resources 
+			*/
 			const currentChat = await Chats.findOne({ chatUsers: { $all: [queriedUsername, username] } })
 			if(!currentChat){
 				const newChat = await new Chats({chatID: uniqueID, chatUsers: [queriedUsername, username], messages:[] })

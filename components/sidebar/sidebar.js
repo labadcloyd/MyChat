@@ -43,7 +43,12 @@ export default function Sidebar(props){
 						})}
 					</div>
 				</div>
-				{!userChats &&
+				{(userChats.length === 0) &&
+					<div>
+						<h2>Loading...</h2>
+					</div>
+				}
+				{(userChats.length === null) &&
 					<div>
 						<h2>Start Chatting With Other Users</h2>
 					</div>
@@ -51,9 +56,9 @@ export default function Sidebar(props){
 				{userChats &&
 					userChats.map((chat)=>{
 						return(
-							<div key={chat.chatID}>
-								<h3>{chat.sender}</h3>
-							</div>
+							<a key={chat.chatID} onClick={()=>{router.push(`/chat/${chat.chatPartner}`)}}>
+								<h4>{chat.chatPartner}</h4>
+							</a>
 						)
 					})
 				}

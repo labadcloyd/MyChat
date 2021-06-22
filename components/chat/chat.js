@@ -18,6 +18,7 @@ export default function Chat(props){
 		}else if(!isExistingChat){
 			await socket.emit('send-message', messageForm, chatID)
 			setMessage('')
+			await axios.patch('/api/addUserChat', {chatID:chatID, chatPartner:selectedUser, username:username})
 		}
 	}
 	return(

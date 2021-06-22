@@ -12,7 +12,7 @@ export default function Home(props) {
 	const [ session, loading ] = useSession()
   
 	const [username, setUsername] = useState()
-	const [userChats, setUserChats] = useState()
+	const [userChats, setUserChats] = useState([])
 	
 	/* Getting user's chats */
 	async function getUserChats(){
@@ -46,17 +46,17 @@ export default function Home(props) {
 			</div>
 		)
 	}
-	if(!loading ){
+	if(!loading || username){
 		return (
 		<div className="chat-wrapper">
 			<Head>
-			<title>Chat App</title>
-			<meta name="description" content="" />
-			<link rel="icon" href="/favicon.ico" />
+				<title>Chat App</title>
+				<meta name="description" content="" />
+				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Sidebar username={username} userChats={userChats}/>
 			<div>
-			Search for a user to start chatting
+				Search for a user to start chatting
 			</div>
 		</div>
 		)
