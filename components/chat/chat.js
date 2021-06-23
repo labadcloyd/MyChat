@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 
 export default function Chat(props){
-	const {isExistingChat, selectedUser, currentChat, username, socket, chatID} = props;
+	const {isExistingChat, selectedUser, currentChat, username, socket, chatID, loadingFetchMore} = props;
 	const [message, setMessage] = useState();
 	const botMsg = useRef();
 	const chatDiv = useRef();
@@ -12,6 +12,10 @@ export default function Chat(props){
 	*/
 	const onScroll = async () => {
 		if (chatDiv.current) {
+			/* returning if its already fetching */
+			if(loadingFetchMore){
+				return
+			}
 			const { scrollTop, scrollHeight, clientHeight } = chatDiv.current;
 			if(scrollTop === 0){
 				const pastScroll = scrollHeight
@@ -71,7 +75,7 @@ export default function Chat(props){
 						}
 						{(currentChat.length > 0) &&
 							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
-								{/* <div style={{visibility:'hidden'}} ref={topDiv}></div> */}
+								<div style={{display:loadingFetchMore?'block':'none'}}>Loading...</div>
 								{currentChat.map((chat, index)=>{
 									return(
 										<div key={index} style={{textAlign:chat.sender===username?'right':'left'}}>

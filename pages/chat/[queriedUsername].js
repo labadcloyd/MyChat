@@ -20,6 +20,8 @@ export default function Home(props) {
 	const [currentChat, setCurrentChat] = useState(null)
 	const [isExistingChat, setIsExistingChat] = useState(false)
 
+	const [loadingFetchMore, setLoadingFetchMore] = useState(false)
+
 	/* FETCHING DATA */
 	/* Getting user's chats */
 	async function getUserChats(){
@@ -65,12 +67,15 @@ export default function Home(props) {
 
 	/* FECTHING MORE CHAT IF IT REACHES TOP */
 	async function fecthMoreChat(){
-		console.log(currentChat)
+		if(loadingFetchMore){
+			return
+		}
+		setLoadingFetchMore(true)
 		const response = await axios.get('/api/getMoreChat', {params:{currentChatLength:currentChat.length}})
-		console.log(response)
-		setCurrentChat((prevValue)=>{
+		await setCurrentChat((prevValue)=>{
 			return [...response.data, ...prevValue]
 		})
+		setLoadingFetchMore(false)
 	}
 
 	/* RENDERING CHAT */
@@ -99,7 +104,7 @@ export default function Home(props) {
 				{currentChat &&
 					<>
 						<Sidebar username={username} userChats={userChats}/>
-						<Chat fecthMoreChat={fecthMoreChat} chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
+						<Chat fecthMoreChat={fecthMoreChat} loadingFetchMore={loadingFetchMore} chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
 					</>
 				}
 			</div>
