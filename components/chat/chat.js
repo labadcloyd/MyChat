@@ -4,9 +4,14 @@ import { useEffect, useRef, useState } from "react"
 export default function Chat(props){
 	const {isExistingChat, selectedUser, currentChat, username, socket, chatID, loadingFetchMore} = props;
 	const [message, setMessage] = useState();
-	const botMsg = useRef();
 	const chatDiv = useRef();
 	
+	useEffect(async()=>{
+		if(chatDiv.current){
+			await chatDiv.current.scrollTo(0, chatDiv.current.scrollHeight)
+		}
+	},[chatID])
+
 	/*
 	 ! THIS IS MY OWN IMPLEMENTATION OF INFINITE SCROLLING FOR CHAT APPS
 	*/
@@ -34,9 +39,13 @@ export default function Chat(props){
 		}
 	};
 
-	useEffect(()=>{
-		botMsg.current.scrollIntoView()
-	},[chatID])
+	/* SOCKET IO */
+	/* turning off listener in order to for socketio to only listen once */
+	socket.off('receive-message').on('receive-message', async(messageForm, room)=>{
+		await props.updateChat(messageForm)
+	})
+
+	/* SENDING THE MESSAGE */
 	async function handleMessage(event){
 		event.preventDefault()
 		const messageForm = {
@@ -47,17 +56,15 @@ export default function Chat(props){
 		if(isExistingChat){
 			await socket.emit('send-message', messageForm, chatID)
 			setMessage('')
-			botMsg.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
 		}else if(!isExistingChat){
 			await socket.emit('send-message', messageForm, chatID)
 			setMessage('')
 			await axios.patch('/api/addUserChat', {chatID:chatID, chatPartner:selectedUser, username:username})
-			botMsg.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
 		}
 	}
 	return(
 		<>
-			<div style={{height:'100vh', paddingTop:'120px', boxSizing:'border-box'}}>
+			<div style={{height:'100vh', padding:'120px 0px 20px 0px', boxSizing:'border-box'}}>
 				{!currentChat &&
 					<div>Loading...</div>
 				}
@@ -83,7 +90,6 @@ export default function Chat(props){
 										</div>
 									)
 								})}
-								<div style={{visibility:'hidden'}} ref={botMsg}></div>
 							</div>
 						}
 						<form onSubmit={handleMessage} style={{position:'fixed', bottom:'0'}}>

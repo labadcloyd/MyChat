@@ -44,6 +44,7 @@ export default function Home(props) {
 		}
 		socketio.emit('join-room', data.chatID)
 	}
+
 	useEffect(async()=>{
 		if(!loading && session){
 			setUsername(session.user.name)
@@ -54,16 +55,15 @@ export default function Home(props) {
 		}
 	}, [loading])
 
-	/* SOCKET IO */
-	/* turning off listener in order to for socketio to only listen once */
-	socketio.off('receive-message').on('receive-message', async(messageForm, room)=>{
+	/* UPDATING CHAT WHEN RECEIVING CHAT */
+	function updateChat(messageForm){
 		if(!isExistingChat){
 			setCurrentChat([messageForm]);
 			setIsExistingChat(true);
 		}else if(isExistingChat){
 			setCurrentChat((prevValue)=>{return  [...prevValue, messageForm] } );
 		}
-	})
+	}
 
 	/* FECTHING MORE CHAT IF IT REACHES TOP */
 	async function fecthMoreChat(){
@@ -104,7 +104,17 @@ export default function Home(props) {
 				{currentChat &&
 					<>
 						<Sidebar username={username} userChats={userChats}/>
-						<Chat fecthMoreChat={fecthMoreChat} loadingFetchMore={loadingFetchMore} chatID={chatID} isExistingChat={isExistingChat} selectedUser={selectedUser} currentChat={currentChat} username={username} socket={socketio}/>
+						<Chat
+							updateChat={updateChat}
+							fecthMoreChat={fecthMoreChat} 
+							loadingFetchMore={loadingFetchMore} 
+							chatID={chatID} 
+							isExistingChat={isExistingChat} 
+							selectedUser={selectedUser} 
+							currentChat={currentChat} 
+							username={username} 
+							socket={socketio}
+						/>
 					</>
 				}
 			</div>
