@@ -10,7 +10,7 @@ export default async function handler(req,res){
 			/* 
 				! this query takes too much resources 
 			*/
-			const currentChat = await Chats.findOne({ chatUsers: { $all: [queriedUsername, username] } })
+			const currentChat = await Chats.findOne({ chatUsers: { $all: [queriedUsername, username] } }, { 'messages': { $slice: -30 } })
 			if(!currentChat){
 				const newChat = await new Chats({chatID: uniqueID, chatUsers: [queriedUsername, username], messages:[] })
 				try{
