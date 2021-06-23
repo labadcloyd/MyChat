@@ -20,7 +20,7 @@ export default function Home(props) {
 	const [currentChat, setCurrentChat] = useState(null)
 	const [isExistingChat, setIsExistingChat] = useState(false)
 
-	/* Fecthing Data */
+	/* FETCHING DATA */
 	/* Getting user's chats */
 	async function getUserChats(){
 		const response = await axios.get('/api/getUserChats', {params:{username:session.user.name}})
@@ -66,12 +66,14 @@ export default function Home(props) {
 	/* FECTHING MORE CHAT IF IT REACHES TOP */
 	async function fecthMoreChat(){
 		console.log(currentChat)
-		const response = await axios.get('/api/getMoreChat')
+		const response = await axios.get('/api/getMoreChat', {params:{currentChatLength:currentChat.length}})
 		console.log(response)
 		setCurrentChat((prevValue)=>{
 			return [...response.data, ...prevValue]
 		})
 	}
+
+	/* RENDERING CHAT */
 	if(loading || !username){
 		return(
 			<div>
