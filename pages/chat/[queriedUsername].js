@@ -44,7 +44,7 @@ export default function Home(props) {
 		}
 		socketio.emit('join-room', data.chatID)
 	}
-
+	/* calling both getCurrentChat and getUserChats function on component mount */
 	useEffect(async()=>{
 		if(!loading && session){
 			setUsername(session.user.name)
@@ -55,17 +55,9 @@ export default function Home(props) {
 		}
 	}, [loading])
 
-	/* UPDATING CHAT WHEN RECEIVING CHAT */
-	function updateChat(messageForm){
-		if(!isExistingChat){
-			setCurrentChat([messageForm]);
-			setIsExistingChat(true);
-		}else if(isExistingChat){
-			setCurrentChat((prevValue)=>{return  [...prevValue, messageForm] } );
-		}
-	}
 
-	/* FECTHING MORE CHAT IF IT REACHES TOP */
+	/* UPDATING THE CHAT STATE DURING USAGE */
+	/* Fecthing more chat if it reaches to the top */
 	async function fecthMoreChat(){
 		if(loadingFetchMore){
 			return
@@ -77,6 +69,16 @@ export default function Home(props) {
 		})
 		setLoadingFetchMore(false)
 	}
+	/* Updating chat when receiving more chat data */
+	function updateChat(messageForm){
+		if(!isExistingChat){
+			setCurrentChat([messageForm]);
+			setIsExistingChat(true);
+		}else if(isExistingChat){
+			setCurrentChat((prevValue)=>{return  [...prevValue, messageForm] } );
+		}
+	}
+	
 
 	/* RENDERING CHAT */
 	if(loading || !username){

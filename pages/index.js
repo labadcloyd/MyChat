@@ -14,6 +14,7 @@ export default function Home(props) {
 	const [username, setUsername] = useState()
 	const [userChats, setUserChats] = useState([])
 	
+	/* FETCHING DATA */
 	/* Getting user's chats */
 	async function getUserChats(){
 		const response = await axios.get('/api/getUserChats', {params:{username:session.user.name}})
@@ -24,6 +25,7 @@ export default function Home(props) {
 			setUserChats(response.data.chats)
 		}
 	}
+	/* Calling getUserChats function on component mount */
 	useEffect(async()=>{
 		if(!loading && session){
 			setUsername(session.user.name)
@@ -37,6 +39,7 @@ export default function Home(props) {
 		console.log('connected')
 	})
 
+	/* RENDERING CHAT */
 	if(loading || !username){
 		return(
 			<div>
