@@ -43,6 +43,9 @@ export default function Chat(props){
 	/* turning off listener in order to for socketio to only listen once */
 	socket.off('receive-message').on('receive-message', async(messageForm, room)=>{
 		await props.updateChat(messageForm)
+		if(messageForm.sender === username){
+			await chatDiv.current.scrollTo(0, chatDiv.current.scrollHeight)
+		}
 	})
 
 	/* SENDING THE MESSAGE */
