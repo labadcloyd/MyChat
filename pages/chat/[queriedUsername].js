@@ -53,7 +53,7 @@ export default function Home(props) {
 		}if(!loading && !session){
 			router.push('/auth')
 		}
-	}, [loading])
+	}, [loading, selectedUser])
 
 
 	/* CHAT USAGE FUNCTIONS */
