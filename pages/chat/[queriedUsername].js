@@ -56,14 +56,14 @@ export default function Home(props) {
 	}, [loading])
 
 
-	/* UPDATING THE CHAT STATE DURING USAGE */
+	/* CHAT USAGE FUNCTIONS */
 	/* Fecthing more chat if it reaches to the top */
 	async function fecthMoreChat(){
 		if(loadingFetchMore){
 			return
 		}
 		setLoadingFetchMore(true)
-		const response = await axios.get('/api/getMoreChat', {params:{currentChatLength:currentChat.length}})
+		const response = await axios.get('/api/getMoreChat', {params:{currentChatLength:currentChat.length, chatID:chatID}})
 		await setCurrentChat((prevValue)=>{
 			return [...response.data, ...prevValue]
 		})

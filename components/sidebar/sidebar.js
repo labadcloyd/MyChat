@@ -43,12 +43,7 @@ export default function Sidebar(props){
 						})}
 					</div>
 				</div>
-				{(userChats.length === 0) &&
-					<div>
-						<h2>Loading...</h2>
-					</div>
-				}
-				{(userChats.length === null) &&
+				{!userChats &&
 					<div>
 						<h2>Start Chatting With Other Users</h2>
 					</div>
