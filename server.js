@@ -8,7 +8,7 @@ const nextApp = next({ dev });
 const handle = nextApp.getRequestHandler();
 const port = process.env.PORT || 3000
 const {Chats} = require('./models/chatmodel')
-require('dotenv').config({path:'./config.env'})
+require('dotenv').config({path:'./envvar.env'})
 const connectDb = require('./utilsServer/connectDB')
 connectDb();
 
