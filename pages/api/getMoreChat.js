@@ -4,7 +4,6 @@ export default async function handler(req, res){
 	if(req.method === 'GET'){
 		const {currentChatLength, chatID } = req.query
 
-
 		/* OLD QUERY */
 		// /*
 		// 	! There is a bug when using $slice and entering numbers for amount of objects to skip and amount of object to return.
