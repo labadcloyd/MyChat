@@ -10,6 +10,38 @@ export default function Sidebar(props){
 	const [userSearch, setUserSearch] = useState()
 	const [foundUsers, setFoundUsers] = useState([])
 	const [showSearch, setShowSearch] = useState(false)
+	const [contacts, setContacts] = useState(<div></div>)
+
+	/* CONDITIONALY RENDERING THE CONTACTS ON THE SIDEBAR */
+	useEffect(()=>{
+		if(userChats===null){
+			setContacts(
+				<div>
+					<h2>Start Chatting With Other Users</h2>
+				</div>
+			)
+		}
+		if(userChats!==null){
+			if(userChats.length<1){
+				setContacts(
+					<div>
+						<h2>Loading...</h2>
+					</div>
+				)
+			}
+			if(userChats.length>0){
+				setContacts(
+					userChats.map((chat)=>{
+						return(
+							<a key={chat.chatID} onClick={()=>{router.push(`/chat/${chat.chatPartner}`)}}>
+								<h4>{chat.chatPartner}</h4>
+							</a>
+						)
+					})
+				)
+			}
+		}
+	},[userChats])
 	/* searching for user */
 	async function handleSearch(event){
 		event.preventDefault()
@@ -43,20 +75,7 @@ export default function Sidebar(props){
 						})}
 					</div>
 				</div>
-				{!userChats &&
-					<div>
-						<h2>Start Chatting With Other Users</h2>
-					</div>
-				}
-				{userChats &&
-					userChats.map((chat)=>{
-						return(
-							<a key={chat.chatID} onClick={()=>{router.push(`/chat/${chat.chatPartner}`)}}>
-								<h4>{chat.chatPartner}</h4>
-							</a>
-						)
-					})
-				}
+				{contacts}
 			</div>
 		</ClickAwayListener>
 		</>
