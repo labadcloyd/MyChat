@@ -21,6 +21,7 @@ export default function Home(props) {
 	const [isExistingChat, setIsExistingChat] = useState(false)
 
 	const [loadingFetchMore, setLoadingFetchMore] = useState(false)
+	const [hasReachedTop, setReachedTop] = useState(false)
 
 	/* FETCHING DATA */
 	/* Getting user's chats */
@@ -59,17 +60,21 @@ export default function Home(props) {
 	/* CHAT USAGE FUNCTIONS */
 	/* Fecthing more chat if it reaches to the top */
 	async function fecthMoreChat(){
-		if(loadingFetchMore){
+		if(loadingFetchMore || hasReachedTop){
 			return
 		}
 		setLoadingFetchMore(true)
 		const response = await axios.get('/api/getMoreChat', {params:{currentChatLength:currentChat.length, chatID:chatID}})
-		await setCurrentChat((prevValue)=>{
+		if(response.data.length===0){
+			setReachedTop(true)
+			return setLoadingFetchMore(false)
+		}
+		setCurrentChat((prevValue)=>{
 			return [...response.data, ...prevValue]
 		})
-		setLoadingFetchMore(false)
+		return setLoadingFetchMore(false)
 	}
-	/* Updating chat when receiving more chat data */
+	/* Updating chat when receiving more chat data WHICH IS CALLED IN THE CHAT COMPONENT*/
 	function updateChat(messageForm){
 		if(!isExistingChat){
 			setCurrentChat([messageForm]);
