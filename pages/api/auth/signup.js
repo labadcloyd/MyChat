@@ -4,10 +4,10 @@ import {hashPassword} from '../../../utilsServer/hash'
 export default async function handler(req, res){
 	if(req.method ==='POST'){
 		const data = req.body.username
-		const {username, password} = data
+		const {username, fullname, password} = data
 		const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 		/* basic validation for inputs */
-		if(!username ||!password){
+		if(!username || !password || !fullname){
 			return res.status(422).json({message:'Invalid Input'})
 		}
 		/* basic validation for password */
@@ -28,7 +28,7 @@ export default async function handler(req, res){
 		/* hashing password and registering user */
 		const hashedPassword = await hashPassword(password)
 		try{
-			const user = {username:username, password: hashedPassword}
+			const user = {username:username, fullname:fullname, password: hashedPassword}
 			await User.insertMany(user)
 			return res.status(201).json({message:'Successfully signed up'})
 		}

@@ -18,13 +18,23 @@ function AuthForm() {
 	/* for handling input change for login and register*/
 	async function handleChange(event){
 		const {name, value} = event.target
-		setCredentials((prevInput)=>{
-			return({
-				...prevInput,
-				/* making sure they dont add spaces*/
-				[name]:value.trim()
+		if(name ==='fullname'){
+			setCredentials((prevInput)=>{
+				return({
+					...prevInput,
+					[name]:value
+				})
 			})
-		})
+		}
+		if(name !=='fullname'){
+			setCredentials((prevInput)=>{
+				return({
+					...prevInput,
+					/* making sure they dont add spaces*/
+					[name]:value.trim()
+				})
+			})
+		}
 	}
 	/* for handling confirm password state*/
 	async function handleConfirmation(event){
@@ -74,9 +84,9 @@ function AuthForm() {
 		}
 	},[credentials.username])
 	/* function for submiting user credentials */
-	async function createUser(username, password){
+	async function createUser(username, fullname, password){
 		try{
-			const response = await axios.post('/api/auth/signup', {username,password})
+			const response = await axios.post('/api/auth/signup', {username,fullname,password})
 			return response
 		}catch(error){
 			/* You can only retrieve the json of the res error through adding .response at the end */
@@ -150,6 +160,10 @@ function AuthForm() {
 							<div style={{color:'red'}}> {isUsernameError ? [errorMessage] : ''}</div>
 							<label htmlFor='username'>Username</label>
 							<input type='text' name='username' required value={credentials.username} onChange={handleChange} maxLength='50' />
+						</div>
+						<div className={css.control} style={ {display:isLogin ? 'none': 'block'}}>
+							<label htmlFor='fullname'>Full Name</label>
+							<input type='text' name='fullname' required value={credentials.fullname} onChange={handleChange} maxLength='50' />
 						</div>
 						<div className={css.control}>
 							<label htmlFor='password'>Password</label>
