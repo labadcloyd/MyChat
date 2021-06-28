@@ -13,6 +13,11 @@ connectDb();
 
 io.on("connection", socket => {
   console.log('connected, details: ' + socket)
+  socket.on('send-message', (messageForm, room)=>{
+    if(room){
+      socket.to(room).emit('receive-message', messageForm)
+    }
+  })
 })
 
 nextApp.prepare().then(() => {
