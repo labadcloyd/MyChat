@@ -163,7 +163,7 @@ function AuthForm() {
 						</div>
 						<div className={css.control} style={ {display:isLogin ? 'none': 'block'}}>
 							<label htmlFor='fullname'>Full Name</label>
-							<input type='text' name='fullname' required value={credentials.fullname} onChange={handleChange} maxLength='50' />
+							<input type='text' name='fullname' required={isLogin? false:true} value={credentials.fullname} onChange={handleChange} maxLength='50' />
 						</div>
 						<div className={css.control}>
 							<label htmlFor='password'>Password</label>
