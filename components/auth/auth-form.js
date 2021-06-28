@@ -174,9 +174,6 @@ function AuthForm() {
 							<label htmlFor='password'>Confirm Password</label>
 							<input type='password' name='confirmPassword' value={confirmPassword} onChange={handleConfirmation}/>
 						</div>
-						<div className={css.control} style={ {display:isLogin ? 'none': 'block', textDecoration:'none', textAlign:'left', fontSize:'.9rem'}}>
-							By clicking Sign up, you agree to our Terms and Privacy Policy. 
-						</div>
 						<div className={css.actions}>
 							<button 
 								disabled={isRegisterError} 
