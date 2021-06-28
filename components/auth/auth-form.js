@@ -3,6 +3,7 @@ import css from './auth-form.module.css';
 import axios from 'axios';
 import {signIn} from 'next-auth/client';
 import {useRouter} from 'next/router';
+import Head from 'next/head';
 
 function AuthForm() {
 	const router = useRouter();
@@ -10,8 +11,6 @@ function AuthForm() {
 	const [isLogin, setIsLogin] = useState(true);
 	const [credentials, setCredentials] = useState({})
 	/* for showing any errors when submitting data */
-	const [confirmPassword, setConfirmedPassword] = useState()
-	const [isConfirmationError, setPasswordError] = useState(false)
 	const [isUsernameError, setUsernameError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isRegisterError, setRegisterError] = useState(false)
@@ -36,31 +35,6 @@ function AuthForm() {
 			})
 		}
 	}
-	/* for handling confirm password state*/
-	async function handleConfirmation(event){
-		const {value} = event.target
-		setConfirmedPassword(value)
-		setPasswordError(false)
-	}
-	/* for confirming password or clearing errors for password*/
-	useEffect(()=>{
-		if(isLogin){
-			setPasswordError(false)
-			setErrorMessage(null)
-		}
-		if(!isLogin){
-			if(confirmPassword !== credentials.password){
-				if(!confirmPassword ){
-					return
-				}
-				setRegisterError(true)
-				return setPasswordError(true)
-			} else{
-				setRegisterError(false)
-				return setPasswordError(false)
-			}
-		}
-	},[confirmPassword, credentials.password])
 	/* for validating or clearing errors for username */
 	useEffect(()=>{
 		const regexUserName = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
@@ -114,7 +88,7 @@ function AuthForm() {
 		/* submitting Signup */
 		else if (!isLogin){
 			/* not allowing users to sign up if there are errors*/
-			if(errorMessage===true || isConfirmationError===true){
+			if(errorMessage===true){
 				return
 			}
 			const response = await createUser(credentials)
@@ -142,19 +116,20 @@ function AuthForm() {
 	/* for clearing data when switching from login to signup vice verse */
 	useEffect(()=>{
 		setCredentials({username:'', password:''})
-		setConfirmedPassword('')
 		setRegisterError(false)
 		setUsernameError(false)
-		setPasswordError(false)
 	},[isLogin])
 	function switchAuthModeHandler() {
 		setIsLogin((prevState) => !prevState);
 	}
   	return (
 		<div className={css.loginWrapper}>
+		<Head>
+			<title>{isLogin ? 'Login | MyChat' : 'Sign Up | MyChat'}</title>
+		</Head>
 			<div className={css.loginContainer}>
 				<section className={css.auth}>
-					<h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
+					<h1>{isLogin ? 'Login to MyChat' : 'Sign Up to MyChat'}</h1>
 					<form onSubmit={submitHandler}>
 						<div className={css.control}>
 							<div style={{color:'red'}}> {isUsernameError ? [errorMessage] : ''}</div>
@@ -168,11 +143,6 @@ function AuthForm() {
 						<div className={css.control}>
 							<label htmlFor='password'>Password</label>
 							<input type='password' name='password' required value={credentials.password} onChange={handleChange} />
-						</div>
-						<div className={css.control} style={ {display:isLogin ? 'none': 'block'}}>
-							<div style={{color:'red'}}> {isConfirmationError ? 'Password does not match' : ''}</div>
-							<label htmlFor='password'>Confirm Password</label>
-							<input type='password' name='confirmPassword' value={confirmPassword} onChange={handleConfirmation}/>
 						</div>
 						<div className={css.actions}>
 							<button 

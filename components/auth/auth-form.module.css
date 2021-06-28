@@ -1,31 +1,32 @@
 .loginWrapper{
 	width: 100%;
 	height: 100vh;
-	background-image: url('/images/loginWallpaper-min.jpg');
-	background-size: cover;
+	background-color: #e8f0f7;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: center;
 	align-items: center;
 }
 .loginContainer{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	max-width: 450px; 
-	width: 100%;
-	height: 100vh;
 	align-items: center;
-	background:#02001a;
+	background:#ffffff;
+	padding:40px;
+	width: 100%;
+	max-width: 450px;
+	border-radius: 20px;
 }
 .auth {
-	width: 70%;
-	text-align: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
   }
   
   .auth h1 {
 	text-align: left;
-	color: white;
-	margin:-30px 20px 30px 0px;
+	color: rgb(51, 51, 51);
+	margin:0px 20px 30px 0px;
   }
   
   .control {
@@ -34,7 +35,7 @@
   
   .control label {
 	display: block;
-	color: white;
+	color: rgb(51, 51, 51);
 	font-weight: bold;
 	margin-bottom: 0.5rem;
 	text-align: left;
@@ -44,14 +45,16 @@
 	outline: none;
 	border:none;
 	font: inherit;
-	background-color: #303030;
-	color: #ffffff;
-	border-radius: 5px;
+	background-color: #e8f0f7;
+	color: rgb(51, 51, 51);
+	border-radius: 10px;
 	width: 100%;
 	text-align: left;
 	padding: 10px;
   }
-  
+  .control input:focus{  
+	border: solid 2px #45afe3;
+  }
   .actions {
 	margin-top: 1.5rem;
 	display: flex;
@@ -62,10 +65,10 @@
   .actions button {
 	cursor: pointer;
 	font: inherit;
-	color: white;
-	background-color: #303030;
-	border: 1px solid #303030;
-	border-radius: 5px;
+	color: rgb(51, 51, 51);
+	background-color: transparent;
+	border: 2px solid #949494;
+	border-radius: 10px;
 	margin-top: 10px;
 	padding: 10px;
   }
@@ -73,12 +76,13 @@
   .actions button:hover {
 	background-color: #45afe3;
 	border-color: #45afe3;
+	color:#ffffff;
   }
   
   .actions .toggle {
 	margin-top: 1rem;
 	background-color: transparent;
-	color: #ffffff;
+	color: rgb(51, 51, 51);
 	border: none;
 	padding: 0.15rem 1.5rem;
   }
@@ -86,4 +90,11 @@
   .actions .toggle:hover {
 	background-color: transparent;
 	color: #45afe3;
+  }
+
+  @media only screen and (max-width: 500px) {
+	.loginContainer{
+		padding:20px;
+		margin:20px;
+	}
   }
