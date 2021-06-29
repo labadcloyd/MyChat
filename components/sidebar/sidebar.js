@@ -1,4 +1,5 @@
 import { CircularProgress, ClickAwayListener } from '@material-ui/core'
+import { ExitToApp, Search } from '@material-ui/icons'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -17,7 +18,7 @@ export default function Sidebar(props){
 		if(userChats===null){
 			setContacts(
 				<div>
-					<h2>Start Chatting With Other Users</h2>
+					<h5 style={{fontSize:'1rem', paddingLeft:'10px', margin:'10px, 10px'}}>Start Chatting With Other Users</h5>
 				</div>
 			)
 		}
@@ -31,11 +32,11 @@ export default function Sidebar(props){
 			}
 			if(userChats.length>0){
 				setContacts(
-					userChats.map((chat)=>{
+					userChats.map((chat, index)=>{
 						return(
-							<a key={chat.chatID} onClick={()=>{router.push(`/chat/${chat.chatPartner}`)}}>
-								<h4>{chat.chatPartner}</h4>
-							</a>
+							<h1 className={css.contact} key={index} onClick={()=>{router.push(`/chat/${chat.chatPartner}`)}}>
+								{chat.chatPartner}
+							</h1>
 						)
 					})
 				)
@@ -58,12 +59,14 @@ export default function Sidebar(props){
 		<>
 		<ClickAwayListener onClickAway={()=>{setShowSearch(false)}}>
 			<div className={css.sidebarContainer}>
-				<div>
-					<form onSubmit={handleSearch}>
-						<input type="search" value={userSearch} onChange={((e)=>{setUserSearch(e.target.value)})}></input>
-						<button type="submit">Search</button>
-					</form>
-					<div style={{display:showSearch?'block':'none'}}>
+				<div className={css.logoHeader}>
+					<h1 className={css.logo}>MyChat</h1>
+					<p><ExitToApp/>Logout</p>
+				</div>
+				<form onSubmit={handleSearch} className={css.searchbar}>
+					<input placeholder="Search for a user" type="search" value={userSearch} onChange={((e)=>{setUserSearch(e.target.value)})}></input>
+					<button type="submit"><Search/></button>
+					<div className={css.searchResults} style={{display:showSearch?'flex':'none'}}>
 						{foundUsers.map((user)=>{
 							return(
 								<div onClick={()=>{router.push(`/chat/${user.username}`)}}>
@@ -74,7 +77,7 @@ export default function Sidebar(props){
 							)
 						})}
 					</div>
-				</div>
+				</form>
 				{contacts}
 			</div>
 		</ClickAwayListener>

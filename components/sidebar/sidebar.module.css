@@ -1,4 +1,90 @@
 .sidebarContainer{
 	height: 100vh;
-	padding-top: 60px;
+	width: 100%;
+	max-width: 300px;
+	border-right: solid 2px #e8f0f7;
+	padding:20px;
+	overflow: auto;
+	box-sizing: border-box;
+}
+/* UPPER PART OF SIDEBAR */
+.logoHeader{
+	display:flex;
+	justify-content:space-between;
+}
+.logoHeader p{
+	margin: 7px 0px 0px 0px;
+	cursor: pointer;
+	display: flex;
+	gap: 5px;
+	align-items: flex-start;
+}
+.logoHeader>p>svg{
+	margin-top: -2px;
+}
+.logoHeader p:hover{
+	color: #45afe3;
+}
+.logo {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1.5rem;
+	color: #000000;
+	transition: .5s;
+	margin: 0px 10px 20px 10px;
+}
+.searchbar{
+	padding:10px;
+	background-color: #eff4f8;
+	border-radius: 10px;
+	width: 100%;
+	display: flex;
+	position: relative;
+}
+.searchbar input{
+	background-color: transparent;
+	border:none;
+	width: 100%;
+}
+.searchbar input:focus{
+	outline: none;
+}
+.searchbar button{
+	background-color: transparent;
+	border:none;
+	padding: 0px;
+	cursor: pointer;
+}
+/* Main Contacts*/
+.contact{
+	font-size: 1rem;
+	margin: 10px 0px;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #eff4f8;
+}
+.contact:hover{
+	background-color: #e8f0f7;
+}
+
+/* SEARCH RESULTS */
+.searchResults{
+	background-color: #eff4f8;
+	padding:10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	flex-direction: column;
+	gap: 5px;
+	position: absolute;
+	width: 100%;
+	top: 50px;
+	left: 0;
+}
+.searchResults>div{
+	padding: 5px 0px;
+	border-bottom: 2px solid #ffffff;
+	cursor: pointer;
+}
+.searchResults>div>p{
+	margin: 0px;
 }

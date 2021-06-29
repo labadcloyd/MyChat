@@ -98,7 +98,7 @@ export default function Home(props) {
 		return (
 			<div className="chat-wrapper">
 				<Head>
-					<title>Chat App</title>
+					<title>MyChat</title>
 					<meta name="description" content="" />
 					<link rel="icon" href="/favicon.ico" />
 				</Head>

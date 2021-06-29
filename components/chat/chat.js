@@ -68,7 +68,7 @@ export default function Chat(props){
 	}
 	return(
 		<>
-			<div style={{height:'100vh', padding:'120px 0px 20px 0px', boxSizing:'border-box'}}>
+			<div style={{height:'100vh', padding:'120px 0px 20px 0px', boxSizing:'border-box', width:'100%'}}>
 				{!currentChat &&
 					<div style={{display:'flex', justifyContent:'center', alignItems:'center', padding:'20px'}}>
 						<CircularProgress/>
@@ -87,7 +87,7 @@ export default function Chat(props){
 							</div>
 						}
 						{(currentChat.length > 0) &&
-							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
+							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', justifyContent:'flex-end', backgroundColor:'#e8f0f7', overflowY:'scroll'}}>
 								<div style={{display:loadingFetchMore?'block':'none'}}>
 									<div style={{display:'flex', justifyContent:'center', padding:'20px'}}>
 										<CircularProgress/>

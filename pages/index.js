@@ -52,14 +52,11 @@ export default function Home(props) {
 		return (
 		<div className="chat-wrapper">
 			<Head>
-				<title>Chat App</title>
+				<title>MyChat</title>
 				<meta name="description" content="" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Sidebar username={username} userChats={userChats}/>
-			<div>
-				Search for a user to start chatting
-			</div>
 		</div>
 		)
 	}
