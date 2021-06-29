@@ -1,6 +1,8 @@
 import { CircularProgress } from "@material-ui/core";
+import { Send } from "@material-ui/icons";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
+import css from './chat.module.css'
 
 export default function Chat(props){
 	const {isExistingChat, selectedUser, currentChat, username, socket, chatID, loadingFetchMore} = props;
@@ -68,7 +70,7 @@ export default function Chat(props){
 	}
 	return(
 		<>
-			<div style={{height:'100vh', padding:'120px 0px 20px 0px', boxSizing:'border-box', width:'100%'}}>
+			<div className={css.chatContainer}>
 				{!currentChat &&
 					<div style={{display:'flex', justifyContent:'center', alignItems:'center', padding:'20px'}}>
 						<CircularProgress/>
@@ -76,8 +78,8 @@ export default function Chat(props){
 				}
 				{currentChat &&
 					<>
-						<div style={{position:"fixed", top:'60px', width:'100%', backgroundColor:'#fff'}}>
-							<h1 style={{margin:'10px'}}>
+						<div className={css.headerUser} >
+							<h1 style={{margin:'10px 0px 10px 20px'}}>
 								{selectedUser}
 							</h1>
 						</div>
@@ -87,7 +89,7 @@ export default function Chat(props){
 							</div>
 						}
 						{(currentChat.length > 0) &&
-							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', justifyContent:'flex-end', backgroundColor:'#e8f0f7', overflowY:'scroll'}}>
+							<div id='scrollableDiv' className={css.chatDiv} ref={chatDiv} onScroll={()=> onScroll()} >
 								<div style={{display:loadingFetchMore?'block':'none'}}>
 									<div style={{display:'flex', justifyContent:'center', padding:'20px'}}>
 										<CircularProgress/>
@@ -95,16 +97,20 @@ export default function Chat(props){
 								</div>
 								{currentChat.map((chat, index)=>{
 									return(
-										<div key={index} style={{textAlign:chat.sender===username?'right':'left'}}>
-											{chat.message}
+										<>
+										<div key={index} style={{display:'flex', width:'100%', justifyContent:chat.sender===username?'flex-end':'flex-start'}}>
+											<div className={css.chat} style={{textAlign:chat.sender===username?'right':'left', backgroundColor:chat.sender===username?'#09f':'#eff4f8', color:chat.sender===username?'#fff':'#000'}}>
+												{chat.message}
+											</div>
 										</div>
+										</>
 									)
 								})}
 							</div>
 						}
-						<form onSubmit={handleMessage} style={{position:'fixed', bottom:'0'}}>
+						<form className={css.sendMessageInput} onSubmit={handleMessage} >
 							<input placeholder='Send a message' value={message} onChange={(e)=>{setMessage(e.target.value)}}></input>
-							<button type='submit'>Send</button>
+							<button type='submit'><Send/></button>
 						</form>
 					</>
 				}
