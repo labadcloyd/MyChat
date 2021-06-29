@@ -1,4 +1,4 @@
-import { ClickAwayListener } from '@material-ui/core'
+import { CircularProgress, ClickAwayListener } from '@material-ui/core'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -24,8 +24,8 @@ export default function Sidebar(props){
 		if(userChats!==null){
 			if(userChats.length<1){
 				setContacts(
-					<div>
-						<h2>Loading...</h2>
+					<div style={{display:'flex', justifyContent:'center', padding:'20px'}}>
+						<CircularProgress/>
 					</div>
 				)
 			}

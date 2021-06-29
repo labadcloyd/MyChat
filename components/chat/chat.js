@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 
@@ -69,7 +70,9 @@ export default function Chat(props){
 		<>
 			<div style={{height:'100vh', padding:'120px 0px 20px 0px', boxSizing:'border-box'}}>
 				{!currentChat &&
-					<div>Loading...</div>
+					<div style={{display:'flex', justifyContent:'center', alignItems:'center', padding:'20px'}}>
+						<CircularProgress/>
+					</div>
 				}
 				{currentChat &&
 					<>
@@ -85,7 +88,11 @@ export default function Chat(props){
 						}
 						{(currentChat.length > 0) &&
 							<div id='scrollableDiv' ref={chatDiv} onScroll={()=> onScroll()} style={{height:'100%', padding:'20px', display:'flex', flexDirection:'column', backgroundColor:'#efefef', overflowY:'scroll'}}>
-								<div style={{display:loadingFetchMore?'block':'none'}}>Loading...</div>
+								<div style={{display:loadingFetchMore?'block':'none'}}>
+									<div style={{display:'flex', justifyContent:'center', padding:'20px'}}>
+										<CircularProgress/>
+									</div>
+								</div>
 								{currentChat.map((chat, index)=>{
 									return(
 										<div key={index} style={{textAlign:chat.sender===username?'right':'left'}}>

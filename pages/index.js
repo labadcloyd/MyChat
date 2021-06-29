@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import {SocketContext} from '../context/socketContext';
 import {getSession, useSession} from 'next-auth/client'
 import axios from 'axios';
+import { CircularProgress } from '@material-ui/core';
 
 export default function Home(props) {
   const router = useRouter()
@@ -42,10 +43,8 @@ export default function Home(props) {
 	/* RENDERING CHAT */
 	if(loading || !username){
 		return(
-			<div>
-				<h1>Loading...</h1>
-				<h1>Loading...</h1>
-				<h1>Loading...</h1>
+			<div className="main-loading-div">
+				<CircularProgress/>
 			</div>
 		)
 	}

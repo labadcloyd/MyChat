@@ -3,6 +3,7 @@ import Head from 'next/head'
 import {getSession, useSession} from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
 
 function AuthPage() {
   const router = useRouter()
@@ -10,14 +11,18 @@ function AuthPage() {
 
   if(loading) {
     return <>
-      <h1>Loading...</h1>
+      <div className="main-loading-div">
+				<CircularProgress></CircularProgress>
+			</div>
     </>
   }
   if(!loading){
     if(session){
       router.push('/')
       return <>
-      <h1>Loading but should be redirecting</h1>
+      <div className="main-loading-div">
+        <CircularProgress/>
+			</div>
       </>
     }
     if(!session){
