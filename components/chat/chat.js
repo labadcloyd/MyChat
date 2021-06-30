@@ -45,9 +45,16 @@ export default function Chat(props){
 	/* SOCKET IO */
 	/* turning off listener in order to for socketio to only listen once */
 	socket.off('receive-message').on('receive-message', async(messageForm, room)=>{
+		const { scrollTop, scrollHeight, clientHeight } = chatDiv.current;
 		await props.updateChat(messageForm)
 		if(messageForm.sender === username){
 			await chatDiv.current.scrollTo(0, chatDiv.current.scrollHeight)
+		}
+		if(messageForm.sender !== username){
+			if((Math.floor(scrollHeight - scrollTop)) === clientHeight || (Math.floor(scrollHeight - scrollTop))<clientHeight){
+				console.log('called')
+				await chatDiv.current.scrollTo(0, chatDiv.current.scrollHeight)
+			}
 		}
 	})
 
