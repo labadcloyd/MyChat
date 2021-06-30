@@ -61,6 +61,10 @@ export default function Chat(props){
 	/* SENDING THE MESSAGE */
 	async function handleMessage(event){
 		event.preventDefault()
+		if (!message.replace(/\s/g, '').length) {
+			setMessage('')
+			return
+		}
 		const messageForm = {
 			message: message,
 			sender: username,
