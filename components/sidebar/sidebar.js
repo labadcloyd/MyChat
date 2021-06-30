@@ -1,6 +1,7 @@
 import { CircularProgress, ClickAwayListener } from '@material-ui/core'
 import { ExitToApp, Search } from '@material-ui/icons'
 import axios from 'axios'
+import { signOut } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import css from './sidebar.module.css'
@@ -55,13 +56,18 @@ export default function Sidebar(props){
 			console.log(err)
         }
 	}
+	/* LOGING OUT THE USER */
+	function logoutHandler() {
+		signOut();
+		return router.push('/auth')
+	}
 	return(
 		<>
 		<ClickAwayListener onClickAway={()=>{setShowSearch(false)}}>
 			<div className={css.sidebarContainer}>
 				<div className={css.logoHeader}>
 					<h1 className={css.logo}>MyChat</h1>
-					<p><ExitToApp/>Logout</p>
+					<p onClick={logoutHandler}><ExitToApp/>Logout</p>
 				</div>
 				<form onSubmit={handleSearch} className={css.searchbar}>
 					<input placeholder="Search for a user" type="search" value={userSearch} onChange={((e)=>{setUserSearch(e.target.value)})}></input>
